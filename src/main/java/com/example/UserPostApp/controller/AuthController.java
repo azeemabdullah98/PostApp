@@ -21,15 +21,8 @@ public class AuthController {
 
     @PostMapping("/adduser")
     public ResponseEntity<Map<String,Object>> addUser(@RequestBody SignupRequest signupRequest){
-        Map<String,Object> response = new HashMap<>();
-        User user = new User();
-        user.setUsername(signupRequest.getUsername());
-        user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
-        User savedUser = userService.addUser(user);
-        response.put("success",true);
-        response.put("message","user registered successfully");
-        return ResponseEntity.ok().body(response);
+
+        return userService.registerUser(signupRequest);
     }
 
 }
