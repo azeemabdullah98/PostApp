@@ -1,4 +1,4 @@
-package com.example.UserPostApp.model;
+package com.example.PostApp.model;
 
 
 import jakarta.persistence.*;

@@ -1,18 +1,15 @@
-package com.example.UserPostApp.service;
+package com.example.PostApp.service;
 
-import com.example.UserPostApp.model.Role;
-import com.example.UserPostApp.model.SignupRequest;
-import com.example.UserPostApp.model.User;
-import com.example.UserPostApp.repo.RoleRepository;
-import com.example.UserPostApp.repo.UserRepository;
+import com.example.PostApp.model.Role;
+import com.example.PostApp.model.SignupRequest;
+import com.example.PostApp.model.User;
+import com.example.PostApp.repo.RoleRepository;
+import com.example.PostApp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -44,22 +41,31 @@ public class UserService {
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(signupRequest.getPassword());
-//        System.out.println(signupRequest.getUserRoles());
         boolean userRolesExist = signupRequest.getUserRoles().stream().allMatch(Objects::nonNull);
-//        boolean user_roles_exist = signupRequest.getUserRoles().isEmpty();
-//        System.out.println(user_roles_exist);
-        if(userRolesExist){
-            user.setUserRoles(signupRequest.getUserRoles());
-//           for(Role role: signupRequest.getUserRoles()) {
-//               Role newRole = new Role();
-//               System.out.println(role.getRoleName());
-//               newRole.setRoleName(role.getRoleName());
-//               roleRepository.save(newRole);
-//           }
-        }
+        Set<Role> roles = getRole(signupRequest.getUserRoles());
+        user.setUserRoles(roles);
         userRepository.save(user);
         response.put("success",true);
         response.put("message","user registered successfully");
         return ResponseEntity.ok().body(response);
+
+
+    }
+
+    private Set<Role> getRole(Set<String> userRoles) {
+        Set<Role> roleSet = new HashSet<>();
+
+        if(userRoles == null){
+            Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Error: Role not found"));
+            roleSet.add(userRole);
+        }else{
+            userRoles.forEach(role -> {
+                Role userRole = roleRepository.findByRoleName(role)
+                        .orElseThrow(() -> new RuntimeException("Error: Role not found"));
+                roleSet.add(userRole);
+            });
+        }
+        return roleSet;
     }
 }

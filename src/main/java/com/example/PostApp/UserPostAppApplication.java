@@ -1,4 +1,4 @@
-package com.example.UserPostApp;
+package com.example.PostApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

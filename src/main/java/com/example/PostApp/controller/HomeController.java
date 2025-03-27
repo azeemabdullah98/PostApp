@@ -1,4 +1,4 @@
-package com.example.UserPostApp.controller;
+package com.example.PostApp.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,16 +1,13 @@
-package com.example.UserPostApp.controller;
+package com.example.PostApp.controller;
 
-import com.example.UserPostApp.model.SignupRequest;
-import com.example.UserPostApp.model.User;
-import com.example.UserPostApp.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.PostApp.model.SignupRequest;
+import com.example.PostApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController

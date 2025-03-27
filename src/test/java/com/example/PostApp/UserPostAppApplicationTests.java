@@ -1,4 +1,4 @@
-package com.example.UserPostApp;
+package com.example.PostApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

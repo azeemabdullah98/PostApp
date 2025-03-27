@@ -1,9 +1,4 @@
-package com.example.UserPostApp.model;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+package com.example.PostApp.model;
 
 import java.util.Set;
 
@@ -12,9 +7,9 @@ public class SignupRequest {
     private String username;
     private String email;
     private String password;
-    private Set<Role> userRoles;
+    private Set<String> userRoles;
 
-    public SignupRequest(String username, String email, String password, Set<Role> userRoles) {
+    public SignupRequest(String username, String email, String password, Set<String> userRoles) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -48,11 +43,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Set<Role> getUserRoles() {
+    public Set<String> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(Set<Role> userRoles) {
+    public void setUserRoles(Set<String> userRoles) {
         this.userRoles = userRoles;
     }
 }
