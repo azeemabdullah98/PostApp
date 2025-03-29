@@ -1,8 +1,6 @@
 package com.example.PostApp.service;
 
-import com.example.PostApp.model.Role;
-import com.example.PostApp.model.SignupRequest;
-import com.example.PostApp.model.User;
+import com.example.PostApp.model.*;
 import com.example.PostApp.repo.RoleRepository;
 import com.example.PostApp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +30,30 @@ public class UserService {
         }
 
         Optional<User> existingUser = userRepository.findByUsername(signupRequest.getUsername());
+        Optional<String> existingEmail = userRepository.findByEmail(signupRequest.getEmail());
+
         if(existingUser.isPresent()){
             response.put("success",false);
-            response.put("message","User already exists");
+            response.put("message","Username already exists");
             return ResponseEntity.badRequest().body(response);
         }
+
+        if(existingEmail.isPresent()){
+            response.put("success",false);
+            response.put("message","Email already taken");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(signupRequest.getPassword());
-        boolean userRolesExist = signupRequest.getUserRoles().stream().allMatch(Objects::nonNull);
+//        boolean userRolesExist = signupRequest.getUserRoles().stream().allMatch(Objects::nonNull);
         Set<Role> roles = getRole(signupRequest.getUserRoles());
         user.setUserRoles(roles);
+        System.out.println(signupRequest.isActive());
+        user.setActive(signupRequest.isActive());
         userRepository.save(user);
         response.put("success",true);
         response.put("message","user registered successfully");
@@ -67,5 +77,40 @@ public class UserService {
             });
         }
         return roleSet;
+    }
+
+    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
+        Map<String,Object> response = new HashMap<>();
+        if(loginRequest.getUsername() == "" || loginRequest.getPassword() == ""){
+            response.put("success",false);
+            response.put("message","Please provide username and password");
+            return ResponseEntity.badRequest().body(response);
+        }
+        Optional<User> existingUser = userRepository.findByUsername(loginRequest.getUsername());
+        if(!existingUser.isPresent()){
+            response.put("success",false);
+            response.put("message","User does not exist");
+            return ResponseEntity.badRequest().body(response);
+        }
+//        response.put("id",existingUser.get().getId());
+//        response.put("username",existingUser.get().getUsername());
+//        response.put("email",existingUser.get().getEmail());
+//        response.put("roles",existingUser.get().getUserRoles());
+
+        SignupResponse userResponse = new SignupResponse();
+        userResponse.setId(existingUser.get().getId());
+        userResponse.setEmail(existingUser.get().getEmail());
+        userResponse.setUsername(existingUser.get().getUsername());
+        Set<String> userRoles = new HashSet<>();
+        existingUser.get().getUserRoles().forEach(role -> {
+            userRoles.add(role.getRoleName());
+        });
+        userResponse.setUser_roles(userRoles);
+        userResponse.setActive(existingUser.get().isActive());
+        userResponse.setCreatedAt(existingUser.get().getCreatedAt());
+//        System.out.println(existingUser.get().getUserRoles());
+//        userResponse.setUserRoles(existingUser.get().getUserRoles());
+
+        return ResponseEntity.ok().body(userResponse);
     }
 }

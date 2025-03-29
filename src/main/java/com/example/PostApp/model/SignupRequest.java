@@ -8,12 +8,14 @@ public class SignupRequest {
     private String email;
     private String password;
     private Set<String> userRoles;
+    private boolean active;
 
-    public SignupRequest(String username, String email, String password, Set<String> userRoles) {
+    public SignupRequest(String username, String email, String password, Set<String> userRoles, boolean active) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.userRoles = userRoles;
+        this.active = active;
     }
 
     public SignupRequest() {
@@ -49,5 +51,13 @@ public class SignupRequest {
 
     public void setUserRoles(Set<String> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

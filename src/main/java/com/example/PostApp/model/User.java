@@ -1,13 +1,19 @@
 package com.example.PostApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CurrentTimestamp;
 
+import java.util.Date;
 import java.util.Set;
+
+import static org.hibernate.generator.EventType.INSERT;
 
 @Data
 @Entity
@@ -21,11 +27,21 @@ public class User {
 
     @NotNull
     private String username;
+
     @Email
     @NotNull
     private String email;
+
+
+    @JsonIgnore
     @NotNull
     private String password;
+
+    private boolean active;
+
+    @Column(name = "created_at")
+    @CurrentTimestamp(event = INSERT)
+    private Date createdAt;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -70,5 +86,21 @@ public class User {
 
     public void setUserRoles(Set<Role> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

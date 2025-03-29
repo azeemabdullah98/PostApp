@@ -1,5 +1,6 @@
 package com.example.PostApp.controller;
 
+import com.example.PostApp.model.LoginRequest;
 import com.example.PostApp.model.SignupRequest;
 import com.example.PostApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,15 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/adduser")
+    @PostMapping("/register")
     public ResponseEntity<Map<String,Object>> addUser(@RequestBody SignupRequest signupRequest){
 
         return userService.registerUser(signupRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> signIn(@RequestBody LoginRequest loginRequest){
+        return userService.loginUser(loginRequest);
     }
 
 }
