@@ -1,5 +1,6 @@
 package com.example.PostApp.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class SignupResponse {
 
     private boolean active;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     public SignupResponse() {
     }
@@ -68,11 +69,11 @@ public class SignupResponse {
         this.active = active;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

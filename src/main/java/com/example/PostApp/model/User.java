@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -40,8 +41,8 @@ public class User {
     private boolean active;
 
     @Column(name = "created_at")
-    @CurrentTimestamp(event = INSERT)
-    private Date createdAt;
+    @CurrentTimestamp
+    private LocalDateTime createdAt;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -96,11 +97,11 @@ public class User {
         this.active = active;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }
