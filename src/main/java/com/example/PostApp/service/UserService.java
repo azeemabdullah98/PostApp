@@ -5,6 +5,7 @@ import com.example.PostApp.repo.RoleRepository;
 import com.example.PostApp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,9 +18,8 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-    public User addUser(User user) {
-        return userRepository.save(user);
-    }
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public ResponseEntity<Map<String, Object>> registerUser(SignupRequest signupRequest) {
         Map<String,Object> response = new HashMap<>();
@@ -48,7 +48,8 @@ public class UserService {
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
+        user.setPassword(encoder.encode(signupRequest.getPassword()));
+//        user.setPassword(signupRequest.getPassword());
 //        boolean userRolesExist = signupRequest.getUserRoles().stream().allMatch(Objects::nonNull);
         Set<Role> roles = getRole(signupRequest.getUserRoles());
         user.setUserRoles(roles);
@@ -92,10 +93,6 @@ public class UserService {
             response.put("message","User does not exist");
             return ResponseEntity.badRequest().body(response);
         }
-//        response.put("id",existingUser.get().getId());
-//        response.put("username",existingUser.get().getUsername());
-//        response.put("email",existingUser.get().getEmail());
-//        response.put("roles",existingUser.get().getUserRoles());
 
         SignupResponse userResponse = new SignupResponse();
         userResponse.setId(existingUser.get().getId());
