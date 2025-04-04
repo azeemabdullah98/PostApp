@@ -21,12 +21,13 @@ public class SignupResponse {
     public SignupResponse() {
     }
 
-    public SignupResponse(int id, String username, String email, Set<String> user_roles, boolean active) {
+    public SignupResponse(int id, String username, String email, Set<String> user_roles, boolean active,LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.user_roles = user_roles;
         this.active = active;
+        this.createdAt = createdAt;
     }
 
     public int getId() {

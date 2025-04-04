@@ -80,34 +80,34 @@ public class UserService {
         return roleSet;
     }
 
-    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
-        Map<String,Object> response = new HashMap<>();
-        if(loginRequest.getUsername() == "" || loginRequest.getPassword() == ""){
-            response.put("success",false);
-            response.put("message","Please provide username and password");
-            return ResponseEntity.badRequest().body(response);
-        }
-        Optional<User> existingUser = userRepository.findByUsername(loginRequest.getUsername());
-        if(!existingUser.isPresent()){
-            response.put("success",false);
-            response.put("message","User does not exist");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        SignupResponse userResponse = new SignupResponse();
-        userResponse.setId(existingUser.get().getId());
-        userResponse.setEmail(existingUser.get().getEmail());
-        userResponse.setUsername(existingUser.get().getUsername());
-        Set<String> userRoles = new HashSet<>();
-        existingUser.get().getUserRoles().forEach(role -> {
-            userRoles.add(role.getRoleName());
-        });
-        userResponse.setUser_roles(userRoles);
-        userResponse.setActive(existingUser.get().isActive());
-        userResponse.setCreatedAt(existingUser.get().getCreatedAt());
-//        System.out.println(existingUser.get().getUserRoles());
-//        userResponse.setUserRoles(existingUser.get().getUserRoles());
-
-        return ResponseEntity.ok().body(userResponse);
-    }
+//    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
+//        Map<String,Object> response = new HashMap<>();
+//        if(loginRequest.getUsername() == "" || loginRequest.getPassword() == ""){
+//            response.put("success",false);
+//            response.put("message","Please provide username and password");
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//        Optional<User> existingUser = userRepository.findByUsername(loginRequest.getUsername());
+//        if(!existingUser.isPresent()){
+//            response.put("success",false);
+//            response.put("message","User does not exist");
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//
+//        SignupResponse userResponse = new SignupResponse();
+//        userResponse.setId(existingUser.get().getId());
+//        userResponse.setEmail(existingUser.get().getEmail());
+//        userResponse.setUsername(existingUser.get().getUsername());
+//        Set<String> userRoles = new HashSet<>();
+//        existingUser.get().getUserRoles().forEach(role -> {
+//            userRoles.add(role.getRoleName());
+//        });
+//        userResponse.setUser_roles(userRoles);
+//        userResponse.setActive(existingUser.get().isActive());
+//        userResponse.setCreatedAt(existingUser.get().getCreatedAt());
+////        System.out.println(existingUser.get().getUserRoles());
+////        userResponse.setUserRoles(existingUser.get().getUserRoles());
+//
+//        return ResponseEntity.ok().body(userResponse);
+//    }
 }
