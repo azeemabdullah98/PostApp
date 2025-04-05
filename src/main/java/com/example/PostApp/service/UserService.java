@@ -23,7 +23,8 @@ public class UserService {
 
     public ResponseEntity<Map<String, Object>> registerUser(SignupRequest signupRequest) {
         Map<String,Object> response = new HashMap<>();
-        if(signupRequest.getUsername() == "" || signupRequest.getEmail() == "" || signupRequest.getPassword() == ""){
+        // check to handle null value from the user...
+        if(signupRequest.getUsername().equals("") || signupRequest.getEmail().equals("") || signupRequest.getPassword().equals("")){
             response.put("success",false);
             response.put("message","Please provide username/email/password");
             return ResponseEntity.badRequest().body(response);
@@ -32,12 +33,14 @@ public class UserService {
         Optional<User> existingUser = userRepository.findByUsername(signupRequest.getUsername());
         Optional<String> existingEmail = userRepository.findByEmail(signupRequest.getEmail());
 
+        // check if the username is already existing in the DB...
         if(existingUser.isPresent()){
             response.put("success",false);
             response.put("message","Username already exists");
             return ResponseEntity.badRequest().body(response);
         }
 
+        // check if the email is already existing in the DB...
         if(existingEmail.isPresent()){
             response.put("success",false);
             response.put("message","Email already taken");
@@ -49,8 +52,6 @@ public class UserService {
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(encoder.encode(signupRequest.getPassword()));
-//        user.setPassword(signupRequest.getPassword());
-//        boolean userRolesExist = signupRequest.getUserRoles().stream().allMatch(Objects::nonNull);
         Set<Role> roles = getRole(signupRequest.getUserRoles());
         user.setUserRoles(roles);
         System.out.println(signupRequest.isActive());
@@ -62,10 +63,11 @@ public class UserService {
 
 
     }
-
+    //converting role datatype from Set<String> to Set<Role>...
     private Set<Role> getRole(Set<String> userRoles) {
         Set<Role> roleSet = new HashSet<>();
 
+        // assign default role ROLE_USER if the user does not provide a role...
         if(userRoles == null){
             Role userRole = roleRepository.findByRoleName("ROLE_USER")
                     .orElseThrow(() -> new RuntimeException("Error: Role not found"));

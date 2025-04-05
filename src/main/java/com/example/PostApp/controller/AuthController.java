@@ -34,14 +34,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody LoginRequest loginRequest){
-//        return userService.loginUser(loginRequest);
+        //set the Authentication to the username and password...
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
         UserPrincipal userDetails = (UserPrincipal) auth.getPrincipal();
 
-        Set<String> userRoles = userDetails.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toSet());
+        Set<String> userRoles = userDetails.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toSet()); // converting from List<GrantedAuthority> to Set<String>
         SignupResponse response = new SignupResponse(userDetails.getId(),userDetails.getUsername(),userDetails.getEmail(),userRoles,userDetails.isAccountNonExpired(),userDetails.getCreatedAt());
-//        return userService.loginUser(loginRequest);
         return ResponseEntity.ok().body(response);
     }
 
