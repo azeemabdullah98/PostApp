@@ -1,6 +1,6 @@
 ---
 name: Custom issue template
-about: Describe this issue template's purpose here.
+about: sdv wkjvcwkjdncvlkwdnclkwnlcknwlkcnalskcnas lkn lkcnlkd
 title: jsbcijwdbcvkjdbcnksjdnc
 labels: ''
 assignees: ''
