@@ -1,10 +1,9 @@
 package com.example.PostApp.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
-public class SignupResponse {
+public class UserInfoResponse {
 
     private int id;
 
@@ -18,10 +17,10 @@ public class SignupResponse {
 
     private LocalDateTime createdAt;
 
-    public SignupResponse() {
+    public UserInfoResponse() {
     }
 
-    public SignupResponse(int id, String username, String email, Set<String> user_roles, boolean active,LocalDateTime createdAt) {
+    public UserInfoResponse(int id, String username, String email, Set<String> user_roles, boolean active, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
