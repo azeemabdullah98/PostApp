@@ -17,16 +17,19 @@ public class UserInfoResponse {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime modifiedAt;
+
     public UserInfoResponse() {
     }
 
-    public UserInfoResponse(int id, String username, String email, Set<String> user_roles, boolean active, LocalDateTime createdAt) {
+    public UserInfoResponse(int id, String username, String email, Set<String> user_roles, boolean active, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.user_roles = user_roles;
         this.active = active;
         this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
     public int getId() {
@@ -75,5 +78,13 @@ public class UserInfoResponse {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 }

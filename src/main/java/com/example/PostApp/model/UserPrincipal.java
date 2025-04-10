@@ -29,13 +29,15 @@ public class UserPrincipal implements UserDetails {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime modifiedAt;
+
     private User user;
 
     public UserPrincipal(User user) {
         this.user = user;
     }
 
-    public UserPrincipal(Integer id, String username, String email, String password, boolean active, Collection<? extends GrantedAuthority> authorities,LocalDateTime createdAt) {
+    public UserPrincipal(Integer id, String username, String email, String password, boolean active, Collection<? extends GrantedAuthority> authorities,LocalDateTime createdAt,LocalDateTime modifiedAt) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -43,11 +45,12 @@ public class UserPrincipal implements UserDetails {
         this.active = active;
         this.authorities = authorities;
         this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
     public static UserPrincipal build(User user){
         List<GrantedAuthority> authorities = user.getUserRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
 
-        return new UserPrincipal(user.getId(),user.getUsername(),user.getEmail(),user.getPassword(),user.isActive(),authorities,user.getCreatedAt());
+        return new UserPrincipal(user.getId(),user.getUsername(),user.getEmail(),user.getPassword(),user.isActive(),authorities,user.getCreatedAt(),user.getModifiedAt());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -84,5 +87,9 @@ public class UserPrincipal implements UserDetails {
 
     public LocalDateTime getCreatedAt(){
         return this.createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return this.modifiedAt;
     }
 }
