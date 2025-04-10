@@ -4,7 +4,9 @@ import com.example.PostApp.model.*;
 import com.example.PostApp.repo.RoleRepository;
 import com.example.PostApp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -80,5 +82,30 @@ public class UserService {
             });
         }
         return roleSet;
+    }
+
+    public ResponseEntity<?> editUser(EditUserRequest editUserRequest, String username) {
+        User existingUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        if(editUserRequest.getUsername() != null){
+            existingUser.setUsername(editUserRequest.getUsername());
+        }
+        if(editUserRequest.getEmail() != null){
+            existingUser.setEmail(editUserRequest.getEmail());
+        }
+
+        if(!editUserRequest.getUserRoles().isEmpty()){
+            Set<Role> user_roles = getRole(editUserRequest.getUserRoles());
+            existingUser.setUserRoles(user_roles);
+        }
+        userRepository.save(existingUser);
+        UserInfoResponse response = new UserInfoResponse();
+        response.setEmail(existingUser.getEmail());
+        response.setUsername(existingUser.getUsername());
+        response.setId(existingUser.getId());
+        response.setUser_roles(editUserRequest.getUserRoles());
+        response.setActive(existingUser.isActive());
+        response.setCreatedAt(existingUser.getCreatedAt());
+        response.setModifiedAt(existingUser.getModifiedAt());
+        return ResponseEntity.ok().body(response);
     }
 }

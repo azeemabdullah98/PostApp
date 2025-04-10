@@ -3,6 +3,7 @@ package com.example.PostApp.controller;
 import com.example.PostApp.model.*;
 import com.example.PostApp.service.JwtService;
 import com.example.PostApp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +44,7 @@ public class AuthController {
         UserPrincipal userDetails = (UserPrincipal) auth.getPrincipal();
 
         Set<String> userRoles = userDetails.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toSet()); // converting from List<GrantedAuthority> to Set<String>
-        UserInfoResponse response = new UserInfoResponse(userDetails.getId(),userDetails.getUsername(),userDetails.getEmail(),userRoles,userDetails.isAccountNonExpired(),userDetails.getCreatedAt());
+        UserInfoResponse response = new UserInfoResponse(userDetails.getId(),userDetails.getUsername(),userDetails.getEmail(),userRoles,userDetails.isAccountNonExpired(),userDetails.getCreatedAt(),userDetails.getModifiedAt());
 
         if(auth.isAuthenticated()){
             String jwt = jwtService.getToken(userDetails.getUsername());
@@ -52,6 +53,25 @@ public class AuthController {
             return ResponseEntity.internalServerError().body("user login failed");
         }
 
+    }
+
+    @PostMapping("/edituser")
+    public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest, HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        System.out.println(authHeader);
+        String token = null;
+        String username = null;
+
+        if(authHeader != null && authHeader.startsWith("Bearer")){
+            token = authHeader.substring(7);
+            username = jwtService.extractUsername(token);
+            if(username.isEmpty() || username == null){
+                return ResponseEntity.badRequest().body("Invalid Token");
+            }
+        }else{
+            return ResponseEntity.badRequest().body("Token not found");
+        }
+        return userService.editUser(editUserRequest, username);
     }
 
 }
