@@ -11,9 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -37,5 +36,41 @@ public class ProductService {
         response.put("status","success");
         response.put("message","Product successfully added!");
         return ResponseEntity.ok().body(response);
+    }
+
+    public List<?> getAllProducts(String productName) {
+        if(productName != null){
+//            Map<String,Object> response = new HashMap<>();
+            List<Product> response = new ArrayList<>();
+            Optional<Product> productDetail = productRepository.findByProductName(productName);
+            if(!productDetail.isEmpty()){
+                response.add(productDetail.get());
+            }
+            return response;
+        }
+        return productRepository.findAll();
+
+    }
+
+    public ResponseEntity<Map<String, Object>> deleteProduct(UUID productId) {
+        Map<String,Object> response = new HashMap<>();
+        Optional<Product> productOptional = productRepository.findByProductId(productId);
+        if(productOptional.isPresent()){
+            Product product = productOptional.get();
+            if(product.getImagePath() != null){
+                File imageFile = new File(product.getImagePath());
+                if(imageFile.exists()){
+                    imageFile.delete();
+                }
+            }
+            productRepository.deleteByProductId(productId);
+            response.put("status","success");
+            response.put("message","Product with product Id " + productId + " and product name " + product.getProductName() + " deleted successfully");
+            return ResponseEntity.ok().body(response);
+        }else{
+            response.put("status","failure");
+            response.put("message","Product not found");
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
