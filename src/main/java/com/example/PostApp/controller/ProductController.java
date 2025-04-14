@@ -8,20 +8,32 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/addproduct")
+    @PostMapping("/product")
     public ResponseEntity<Map<String,Object>> addProduct(@RequestParam MultipartFile imageFile,
                                                          @RequestParam String productName,
                                                          @RequestParam String productDescription,
                                                          @RequestParam Integer productPrice) throws IOException {
         return productService.addProduct(productName,productDescription,productPrice,imageFile);
+    }
+
+    @GetMapping("/product")
+    public List<?> getProducts(@RequestParam(required = false) String productName){
+        return productService.getAllProducts(productName);
+    }
+
+    @DeleteMapping("/product/{productId}")
+    public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable UUID productId){
+        return productService.deleteProduct(productId);
     }
 }
