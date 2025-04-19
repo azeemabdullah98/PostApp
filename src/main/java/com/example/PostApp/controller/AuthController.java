@@ -48,7 +48,7 @@ public class AuthController {
 
         if(auth.isAuthenticated()){
             String jwt = jwtService.getToken(userDetails.getUsername());
-            return ResponseEntity.ok().header("JWT Token",jwt).body(response);
+            return ResponseEntity.ok().header("jwt_token",jwt).body(response);
         }else{
             return ResponseEntity.internalServerError().body("user login failed");
         }

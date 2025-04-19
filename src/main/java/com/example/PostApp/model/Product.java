@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,6 +23,9 @@ public class Product {
     private String productDescription;
     private Integer productPrice;
     private String imagePath;
+
+//    @ManyToMany(mappedBy = "userProducts")
+//    private Set<User> users;
 
 //    @Lob
 //    @Column(name="product_image", length=1000)
@@ -59,4 +63,20 @@ public class Product {
     public void setProductPrice(Integer productPrice) {
         this.productPrice = productPrice;
     }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 }
