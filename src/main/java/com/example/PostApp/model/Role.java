@@ -19,8 +19,8 @@ public class Role {
     private Integer id;
     private String roleName;
 
-    @ManyToMany(mappedBy = "userRoles")
-    private Set<User> users;
+//    @ManyToMany(mappedBy = "userRoles")
+//    private Set<User> users;
 
     public Integer getId() {
         return id;
@@ -38,11 +38,11 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 }

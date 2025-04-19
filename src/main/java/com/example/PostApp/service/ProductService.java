@@ -2,7 +2,9 @@ package com.example.PostApp.service;
 
 
 import com.example.PostApp.model.Product;
+import com.example.PostApp.model.UserProduct;
 import com.example.PostApp.repo.ProductRepository;
+import com.example.PostApp.repo.UserProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserProductRepository userProductRepository;
 
     private static final String IMG_DIR = "/Users/azeemabdullah/Documents/GitHub/PostApp/src/main/resources/static/images/";
     public ResponseEntity<Map<String,Object>> addProduct(String productName,String productDescription,Integer productPrice, MultipartFile imageFile) throws IOException {
@@ -62,7 +67,18 @@ public class ProductService {
                 if(imageFile.exists()){
                     imageFile.delete();
                 }
+            }else{
+                response.put("status","failure");
+                response.put("message","Product not found!");
+                return ResponseEntity.badRequest().body(response);
             }
+            Optional<UserProduct> userProductMapping = userProductRepository.findById_ProductId(productId);
+            if(userProductMapping.isPresent()){
+                response.put("status","failure");
+                response.put("message","User is mapped to the product!");
+                return ResponseEntity.badRequest().body(response);
+            }
+
             productRepository.deleteByProductId(productId);
             response.put("status","success");
             response.put("message","Product with product Id " + productId + " and product name " + product.getProductName() + " deleted successfully");

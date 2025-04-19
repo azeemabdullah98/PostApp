@@ -8,14 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
-import static org.hibernate.generator.EventType.INSERT;
 
 @Data
 @Entity
@@ -33,7 +31,6 @@ public class User {
     @Email
     @NotNull
     private String email;
-
 
     @JsonIgnore
     @NotNull
@@ -53,6 +50,11 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> userRoles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="user_products",joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> userProducts;
+
 
     public Integer getId() {
         return id;
@@ -116,5 +118,13 @@ public class User {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public List<Product> getUserProducts() {
+        return userProducts;
+    }
+
+    public void setUserProducts(List<Product> userProducts) {
+        this.userProducts = userProducts;
     }
 }
