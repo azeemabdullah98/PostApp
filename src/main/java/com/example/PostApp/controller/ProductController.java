@@ -28,8 +28,8 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public List<?> getProducts(@RequestParam(required = false) String productName){
-        return productService.getAllProducts(productName);
+    public List<?> getProducts(@RequestParam(required = false) UUID productId){
+        return productService.getAllProducts(productId);
     }
 
     @DeleteMapping("/product/{productId}")
