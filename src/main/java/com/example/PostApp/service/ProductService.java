@@ -43,18 +43,16 @@ public class ProductService {
         return ResponseEntity.ok().body(response);
     }
 
-    public List<?> getAllProducts(String productName) {
-        if(productName != null){
-//            Map<String,Object> response = new HashMap<>();
-            List<Product> response = new ArrayList<>();
-            Optional<Product> productDetail = productRepository.findByProductName(productName);
-            if(!productDetail.isEmpty()){
-                response.add(productDetail.get());
+    public List<?> getAllProducts(UUID productId) {
+        List<Product> response = new ArrayList<>();
+        if(productId != null){
+            Optional<Product> productOptional = productRepository.findByProductId(productId);
+            if(productOptional.isPresent()){
+                response.add(productOptional.get());
             }
             return response;
         }
         return productRepository.findAll();
-
     }
 
     public ResponseEntity<Map<String, Object>> deleteProduct(UUID productId) {

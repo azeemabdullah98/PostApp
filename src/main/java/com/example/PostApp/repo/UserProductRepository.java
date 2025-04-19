@@ -14,4 +14,6 @@ public interface UserProductRepository extends JpaRepository<UserProduct, UserPr
     Optional<UserProduct> findById_UserIdAndId_ProductId(Integer userId, UUID productId);
 
     Optional<UserProduct> findById_ProductId(UUID productId);
+
+    Optional<UserProduct> findById_UserId(Integer userId);
 }

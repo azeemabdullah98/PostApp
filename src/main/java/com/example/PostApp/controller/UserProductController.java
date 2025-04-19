@@ -23,12 +23,12 @@ public class UserProductController {
     }
 
     @GetMapping("/userproduct")
-    public List<?> getUserProductMapping(){
-        return userProductService.getMapping();
+    public List<?> getUserProductMapping(@RequestParam(required = false) Integer userId,@RequestParam(required = false) UUID productId){
+        return userProductService.getMapping(userId, productId);
     }
 
     @DeleteMapping("/userproduct")
-    public ResponseEntity<Map<String,Object>> deleteUserProductMapping(@RequestParam Integer userId, @RequestParam UUID productId){
+    public ResponseEntity<Map<String,Object>> deleteUserProductMapping(@RequestParam(required = false) Integer userId, @RequestParam(required = false) UUID productId){
         return userProductService.deleteMapping(userId, productId);
     }
 }
