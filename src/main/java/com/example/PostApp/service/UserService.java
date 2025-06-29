@@ -54,6 +54,10 @@ public class UserService {
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(encoder.encode(signupRequest.getPassword()));
+        if(signupRequest.getUserRoles().isEmpty()){
+            response.put("message","Please select at least one role");
+            return ResponseEntity.badRequest().body(response);
+        }
         Set<Role> roles = getRole(signupRequest.getUserRoles());
         user.setUserRoles(roles);
         System.out.println(signupRequest.isActive());
@@ -107,5 +111,10 @@ public class UserService {
         response.setCreatedAt(existingUser.getCreatedAt());
         response.setModifiedAt(existingUser.getModifiedAt());
         return ResponseEntity.ok().body(response);
+    }
+
+    public ResponseEntity<?> getRoles() {
+        List<Role> userRoles = roleRepository.findAll();
+        return ResponseEntity.ok().body(userRoles);
     }
 }

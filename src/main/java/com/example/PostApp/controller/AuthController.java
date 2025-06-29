@@ -10,15 +10,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired
@@ -72,6 +71,11 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Token not found");
         }
         return userService.editUser(editUserRequest, username);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<?> getRoles(){
+        return userService.getRoles();
     }
 
 }

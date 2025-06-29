@@ -3,17 +3,23 @@ package com.example.PostApp.controller;
 import com.example.PostApp.model.Product;
 import com.example.PostApp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
 
     @Autowired
