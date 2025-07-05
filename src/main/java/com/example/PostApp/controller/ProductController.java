@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -26,11 +27,24 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/product")
-    public ResponseEntity<Map<String,Object>> addProduct(@RequestParam MultipartFile imageFile,
+    public ResponseEntity<?> addProduct(@RequestParam MultipartFile imageFile,
                                                          @RequestParam String productName,
                                                          @RequestParam String productDescription,
                                                          @RequestParam Integer productPrice) throws IOException {
         return productService.addProduct(productName,productDescription,productPrice,imageFile);
+    }
+
+    @GetMapping("/image/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws IOException {
+        Path imagePath = Paths.get("/Users/azeemabdullah/Documents/GitHub/PostApp/src/main/resources/static/images/", imageName); // adjust the path as needed
+        if (Files.exists(imagePath)) {
+            Resource resource = new UrlResource(imagePath.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // or IMAGE_PNG based on your use case
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/product")

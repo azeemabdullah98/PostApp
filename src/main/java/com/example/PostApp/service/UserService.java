@@ -88,19 +88,22 @@ public class UserService {
         return roleSet;
     }
 
-    public ResponseEntity<?> editUser(EditUserRequest editUserRequest, String username) {
-        User existingUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        if(editUserRequest.getUsername() != null){
-            existingUser.setUsername(editUserRequest.getUsername());
+    public ResponseEntity<?> editUser(EditUserRequest editUserRequest, String email) {
+        User existingUser = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+        if(editUserRequest.getUsername() == null || editUserRequest.getUsername().isEmpty()){
+            return ResponseEntity.badRequest().body("Username cannot be empty");
         }
-        if(editUserRequest.getEmail() != null){
-            existingUser.setEmail(editUserRequest.getEmail());
+        if(editUserRequest.getEmail() == null || editUserRequest.getEmail().isEmpty()){
+            return ResponseEntity.badRequest().body("Email cannot be empty");
         }
 
-        if(!editUserRequest.getUserRoles().isEmpty()){
-            Set<Role> user_roles = getRole(editUserRequest.getUserRoles());
-            existingUser.setUserRoles(user_roles);
+        if(editUserRequest.getUserRoles().isEmpty()){
+            return ResponseEntity.badRequest().body("User must have atleast one role assigned");
         }
+        existingUser.setUsername(editUserRequest.getUsername());
+        existingUser.setEmail(editUserRequest.getEmail());
+        Set<Role> user_roles = getRole(editUserRequest.getUserRoles());
+        existingUser.setUserRoles(user_roles);
         userRepository.save(existingUser);
         UserInfoResponse response = new UserInfoResponse();
         response.setEmail(existingUser.getEmail());

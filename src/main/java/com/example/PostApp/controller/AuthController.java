@@ -56,21 +56,21 @@ public class AuthController {
 
     @PostMapping("/edituser")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest, HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        System.out.println(authHeader);
-        String token = null;
-        String username = null;
-
-        if(authHeader != null && authHeader.startsWith("Bearer")){
-            token = authHeader.substring(7);
-            username = jwtService.extractUsername(token);
-            if(username.isEmpty() || username == null){
-                return ResponseEntity.badRequest().body("Invalid Token");
-            }
-        }else{
-            return ResponseEntity.badRequest().body("Token not found");
-        }
-        return userService.editUser(editUserRequest, username);
+//        String authHeader = request.getHeader("Authorization");
+//        System.out.println(authHeader);
+//        String token = null;
+//        String username = null;
+//
+//        if(authHeader != null && authHeader.startsWith("Bearer")){
+//            token = authHeader.substring(7);
+//            username = jwtService.extractUsername(token);
+//            if(username.isEmpty() || username == null){
+//                return ResponseEntity.badRequest().body("Invalid Token");
+//            }
+//        }else{
+//            return ResponseEntity.badRequest().body("Token not found");
+//        }
+        return userService.editUser(editUserRequest, editUserRequest.getEmail());
     }
 
     @GetMapping("/roles")

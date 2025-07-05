@@ -36,7 +36,7 @@ public class ProductService {
         File dest = new File(imagePath);
         imageFile.transferTo(dest);
         Product productDetail = Product.builder().productName(productName).productPrice(productPrice)
-                .productDescription(productDescription).imagePath(imagePath).build();
+                .productDescription(productDescription).imagePath(imageName).build();
         productRepository.save(productDetail);
         response.put("status","success");
         response.put("message","Product successfully added!");
