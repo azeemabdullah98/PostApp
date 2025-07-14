@@ -38,6 +38,7 @@ public class ProductService {
         Product productDetail = Product.builder().productName(productName).productPrice(productPrice)
                 .productDescription(productDescription).imagePath(imageName).build();
         productRepository.save(productDetail);
+        response.put("product",productDetail);
         response.put("status","success");
         response.put("message","Product successfully added!");
         return ResponseEntity.ok().body(response);
