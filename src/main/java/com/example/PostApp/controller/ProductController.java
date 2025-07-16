@@ -34,6 +34,11 @@ public class ProductController {
         return productService.addProduct(productName,productDescription,productPrice,imageFile);
     }
 
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
+        return productService.searchByKeyword(keyword);
+    }
+
     @GetMapping("/image/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws IOException {
         Path imagePath = Paths.get("/Users/azeemabdullah/Documents/GitHub/PostApp/src/main/resources/static/images/", imageName); // adjust the path as needed

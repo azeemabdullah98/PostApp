@@ -88,4 +88,8 @@ public class ProductService {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+    public List<Product> searchByKeyword(String keyword) {
+        return productRepository.searchByKeyword(keyword);
+    }
 }
