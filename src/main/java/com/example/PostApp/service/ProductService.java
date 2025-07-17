@@ -5,6 +5,7 @@ import com.example.PostApp.model.Product;
 import com.example.PostApp.model.UserProduct;
 import com.example.PostApp.repo.ProductRepository;
 import com.example.PostApp.repo.UserProductRepository;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,10 @@ public class ProductService {
         String imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
         String imagePath = IMG_DIR + imageName;
         File dest = new File(imagePath);
-        imageFile.transferTo(dest);
+        Thumbnails.of(imageFile.getInputStream())
+                .size(800, 600)
+                .outputFormat("jpg")
+                .toFile(dest);
         Product productDetail = Product.builder().productName(productName).productPrice(productPrice)
                 .productDescription(productDescription).imagePath(imageName).build();
         productRepository.save(productDetail);
