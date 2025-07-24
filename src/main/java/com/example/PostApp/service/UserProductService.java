@@ -72,11 +72,8 @@ public class UserProductService {
             return response;
         }
         if(userId != null){
-            Optional<UserProduct> userProductOptional = userProductRepo.findById_UserId(userId);
-            if(userProductOptional.isPresent()){
-                response.add(userProductOptional.get());
-            }
-            return response;
+            List<UserProduct> userProductOptional = userProductRepo.findById_UserId(userId);
+            return userProductOptional;
         }
         if(productId != null){
             Optional<UserProduct> userProductOptional = userProductRepo.findById_ProductId(productId);

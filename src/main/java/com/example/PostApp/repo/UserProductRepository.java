@@ -3,8 +3,10 @@ package com.example.PostApp.repo;
 import com.example.PostApp.model.UserProduct;
 import com.example.PostApp.model.UserProductId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +16,6 @@ public interface UserProductRepository extends JpaRepository<UserProduct, UserPr
     Optional<UserProduct> findById_UserIdAndId_ProductId(Integer userId, UUID productId);
 
     Optional<UserProduct> findById_ProductId(UUID productId);
-
-    Optional<UserProduct> findById_UserId(Integer userId);
+    
+    List<UserProduct> findById_UserId(Integer userId);
 }
